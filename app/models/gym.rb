@@ -12,20 +12,22 @@ class Gym
     ALL
   end
   
-  def membership_list
-    Membership.all.select {|membership_obj| membership_obj.gym == self}
+  def memberships
+    Membership.all.select do |membership_obj|
+      membership_obj.gym == self
+    end
   end
 
-  def lifter_list
-    self.membership_list.map {|membership_obj| membership_obj.lifter}
+  def lifters
+    self.memberships.map {|membership_obj| membership_obj.name}
   end
   
-  def lifter_name_list
-    self.lifter_list.map {|lifter_obj| lifter_obj.name}
+  def lifter_names
+    self.lifters.map {|lifter_obj| lifter_obj.name}
   end
   
-  def gym_lift_total
-    self.lifter_list.reduce(0) do |lift_total, lifter_obj|
+  def lift_total_for_gym
+    self.lifters.reduce(0) do |lift_total, lifter_obj|
       lift_total += lifter_obj.lift_total
     end
   end

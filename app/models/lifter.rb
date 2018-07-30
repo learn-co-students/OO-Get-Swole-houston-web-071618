@@ -1,4 +1,3 @@
-
 class Lifter
   attr_reader :name, :lift_total
 
@@ -14,29 +13,35 @@ class Lifter
     ALL 
   end
 
-  def all_memberships
-    Membership.all.select {|membership_obj| membership_obj.lifter == self}
+  def memberships
+    Membership.all.select {|membership_obj|
+      membership_obj.name == self}
   end
   
-  def all_gyms
-    self.all_memberships.map {|membership_obj| membership_obj.gym}
+  def gyms
+    self.memberships.map {|membership_obj| membership_obj.gym}
   end
   
   def self.average_lift
-    total = self.reduce(0) do |lift_total, lifter_obj|
+    total = self.all.reduce(0) do |lift_total, lifter_obj|
       lift_total += lifter_obj.lift_total
     end
     
     total / self.all.count
   end
   
-  def total_gym_cost
-    self.all_memberships.reduce(0) do |gym_total, membership_obj| 
+  def total_cost
+    self.memberships.reduce(0) do |gym_total, membership_obj| 
       gym_total += membership_obj.cost
     end
   end
   
-  def gym_signup(gym_obj, cost)
-    Membership.new(cost, self, gym_obj)
+  def sign_up(cost, gym_obj)
+    Membership.new(self, gym_obj, cost)
+    Gym.new(gym_obj.name)
+  end
+  
+  def self.all 
+    ALL 
   end
 end
