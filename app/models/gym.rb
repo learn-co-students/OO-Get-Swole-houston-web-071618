@@ -1,6 +1,6 @@
 class Gym
  ALL = []
-
+ 
   attr_reader :name
 
   def initialize(name)
